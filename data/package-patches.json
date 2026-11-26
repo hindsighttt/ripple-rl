@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "recipes": [
+    {
+      "id": "standard-boost-no-plume",
+      "label": "Hide Standard boost plume (test)",
+      "build": "Epic capture 2026-11-25",
+      "package": "Boost_Standard_SF.upk",
+      "baselineSha256": "fb0cbc69a9f5bbd6987ca65f72b1fcbdb918d5415aeb8cda9db2b2411f33f4a9",
+      "edits": [
+        {
+          "export": 179,
+          "objectPath": "Boost_Standard.FX.Boost_Painted_PS",
+          "sourceSha256": "8d3fe3792c1c63a1406c11d4762643378f62de27608ff8bde902b0bb09e72cb1",
+          "resultSha256": "1c3d6c9c4e8cba8326a81b9af936a0c3619f50d34850aa2e24bfffdff31b0f91",
+          "splices": [
+            {
+              "offset": 88,
+              "beforeHex": "080000000000000001000000b1000000",
+              "afterHex": "040000000000000000000000"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

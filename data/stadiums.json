@@ -1,0 +1,386 @@
+[
+ {
+  "id": "Stadium_P",
+  "name": "DFH Stadium"
+ },
+ {
+  "id": "stadium_day_p",
+  "name": "DFH Stadium (Day)"
+ },
+ {
+  "id": "Stadium_Foggy_P",
+  "name": "DFH Stadium (Stormy)"
+ },
+ {
+  "id": "Stadium_Winter_P",
+  "name": "DFH Stadium (Snowy)"
+ },
+ {
+  "id": "Stadium_Race_Day_p",
+  "name": "DFH Stadium (Circuit)"
+ },
+ {
+  "id": "STADIUM_10A_P",
+  "name": "DFH Stadium (10th Anniversary)"
+ },
+ {
+  "id": "EuroStadium_P",
+  "name": "Mannfield"
+ },
+ {
+  "id": "EuroStadium_Night_P",
+  "name": "Mannfield (Night)"
+ },
+ {
+  "id": "EuroStadium_Rainy_P",
+  "name": "Mannfield (Stormy)"
+ },
+ {
+  "id": "eurostadium_snownight_p",
+  "name": "Mannfield (Snowy)"
+ },
+ {
+  "id": "EuroStadium_Dusk_P",
+  "name": "Mannfield (Dusk)"
+ },
+ {
+  "id": "cs_p",
+  "name": "Champions Field"
+ },
+ {
+  "id": "cs_day_p",
+  "name": "Champions Field (Day)"
+ },
+ {
+  "id": "swoosh_p",
+  "name": "Champions Field (Nike FC)"
+ },
+ {
+  "id": "cs_hw_p",
+  "name": "Rivals Arena"
+ },
+ {
+  "id": "TrainStation_P",
+  "name": "Urban Central"
+ },
+ {
+  "id": "TrainStation_Night_P",
+  "name": "Urban Central (Night)"
+ },
+ {
+  "id": "TrainStation_Dawn_P",
+  "name": "Urban Central (Dawn)"
+ },
+ {
+  "id": "Haunted_TrainStation_P",
+  "name": "Urban Central (Haunted)"
+ },
+ {
+  "id": "Park_P",
+  "name": "Beckwith Park"
+ },
+ {
+  "id": "Park_Night_P",
+  "name": "Beckwith Park (Midnight)"
+ },
+ {
+  "id": "Park_Rainy_P",
+  "name": "Beckwith Park (Stormy)"
+ },
+ {
+  "id": "Park_Snowy_P",
+  "name": "Beckwith Park (Snowy)"
+ },
+ {
+  "id": "park_bman_p",
+  "name": "Beckwith Park (Gotham Night)"
+ },
+ {
+  "id": "UtopiaStadium_P",
+  "name": "Utopia Coliseum"
+ },
+ {
+  "id": "UtopiaStadium_Dusk_P",
+  "name": "Utopia Coliseum (Dusk)"
+ },
+ {
+  "id": "UtopiaStadium_Snow_P",
+  "name": "Utopia Coliseum (Snowy)"
+ },
+ {
+  "id": "UtopiaStadium_Lux_P",
+  "name": "Utopia Coliseum (Gilded)"
+ },
+ {
+  "id": "Wasteland_P",
+  "name": "Wasteland"
+ },
+ {
+  "id": "Wasteland_Night_P",
+  "name": "Wasteland (Night)"
+ },
+ {
+  "id": "Wasteland_GRS_P",
+  "name": "Wasteland (Pitched)"
+ },
+ {
+  "id": "wasteland_s_p",
+  "name": "Wasteland (Standard)"
+ },
+ {
+  "id": "wasteland_Night_S_P",
+  "name": "Wasteland (Standard, Night)"
+ },
+ {
+  "id": "NeoTokyo_P",
+  "name": "Neo Tokyo"
+ },
+ {
+  "id": "NeoTokyo_Standard_P",
+  "name": "Neo Tokyo (Standard)"
+ },
+ {
+  "id": "NeoTokyo_Arcade_P",
+  "name": "Neo Tokyo (Arcade)"
+ },
+ {
+  "id": "NeoTokyo_Hax_P",
+  "name": "Neo Tokyo (Hacked)"
+ },
+ {
+  "id": "NeoTokyo_Toon_p",
+  "name": "Neo Tokyo (Comic)"
+ },
+ {
+  "id": "Underwater_P",
+  "name": "AquaDome"
+ },
+ {
+  "id": "Underwater_GRS_P",
+  "name": "AquaDome (Salty Shallows)"
+ },
+ {
+  "id": "ARC_P",
+  "name": "Starbase ARC"
+ },
+ {
+  "id": "arc_standard_p",
+  "name": "Starbase ARC (Standard)"
+ },
+ {
+  "id": "ARC_Darc_P",
+  "name": "Starbase ARC (Aftermath)"
+ },
+ {
+  "id": "farm_p",
+  "name": "Farmstead"
+ },
+ {
+  "id": "Farm_Night_P",
+  "name": "Farmstead (Night)"
+ },
+ {
+  "id": "Farm_HW_P",
+  "name": "Farmstead (Spooky)"
+ },
+ {
+  "id": "Farm_GRS_P",
+  "name": "Farmstead (Pitched)"
+ },
+ {
+  "id": "beach_P",
+  "name": "Salty Shores"
+ },
+ {
+  "id": "beach_night_p",
+  "name": "Salty Shores (Night)"
+ },
+ {
+  "id": "Beach_Night_GRS_P",
+  "name": "Salty Shores (Salty Fest)"
+ },
+ {
+  "id": "CHN_Stadium_P",
+  "name": "Forbidden Temple"
+ },
+ {
+  "id": "CHN_Stadium_Day_P",
+  "name": "Forbidden Temple (Day)"
+ },
+ {
+  "id": "FNI_Stadium_P",
+  "name": "Forbidden Temple (Fire & Ice)"
+ },
+ {
+  "id": "outlaw_p",
+  "name": "Deadeye Canyon"
+ },
+ {
+  "id": "Outlaw_Oasis_P",
+  "name": "Deadeye Canyon (Oasis)"
+ },
+ {
+  "id": "woods_p",
+  "name": "Drift Woods"
+ },
+ {
+  "id": "Woods_Night_P",
+  "name": "Drift Woods (Night)"
+ },
+ {
+  "id": "music_p",
+  "name": "Neon Fields"
+ },
+ {
+  "id": "street_p",
+  "name": "Sovereign Heights"
+ },
+ {
+  "id": "UF_Day_P",
+  "name": "Futura Garden"
+ },
+ {
+  "id": "UF_Night_P",
+  "name": "Futura Garden (Night)"
+ },
+ {
+  "id": "FF_Dusk_P",
+  "name": "Estadio Vida"
+ },
+ {
+  "id": "mall_day_p",
+  "name": "Boostfield Mall"
+ },
+ {
+  "id": "Paname_Dusk_P",
+  "name": "Parc de Paris"
+ },
+ {
+  "id": "bb_p",
+  "name": "Champions Field (NFL)"
+ },
+ {
+  "id": "throwbackstadium_P",
+  "name": "Throwback Stadium"
+ },
+ {
+  "id": "throwbackhockey_p",
+  "name": "Throwback Hockey"
+ },
+ {
+  "id": "HoopsStadium_P",
+  "name": "Dunk House"
+ },
+ {
+  "id": "hoopsStreet_p",
+  "name": "The Block"
+ },
+ {
+  "id": "ShatterShot_P",
+  "name": "Core 707"
+ },
+ {
+  "id": "KO_Calavera_P",
+  "name": "Calavera"
+ },
+ {
+  "id": "KO_Carbon_P",
+  "name": "Carbon"
+ },
+ {
+  "id": "KO_Quadron_P",
+  "name": "Quadron"
+ },
+ {
+  "id": "Labs_Underpass_P",
+  "name": "Labs Underpass"
+ },
+ {
+  "id": "Labs_Utopia_P",
+  "name": "Labs Utopia"
+ },
+ {
+  "id": "Labs_Cosmic_P",
+  "name": "Labs Cosmic"
+ },
+ {
+  "id": "Labs_Cosmic_V4_P",
+  "name": "Labs Cosmic V4"
+ },
+ {
+  "id": "Labs_DoubleGoal_P",
+  "name": "Labs Double Goal"
+ },
+ {
+  "id": "Labs_DoubleGoal_V2_P",
+  "name": "Labs Double Goal V2"
+ },
+ {
+  "id": "Labs_Octagon_P",
+  "name": "Labs Octagon"
+ },
+ {
+  "id": "Labs_Octagon_02_P",
+  "name": "Labs Octagon 02"
+ },
+ {
+  "id": "Labs_Octagon_B2B_02_P",
+  "name": "Labs Octagon B2B 02"
+ },
+ {
+  "id": "Labs_Octagon_Vent_P",
+  "name": "Labs Octagon Vent"
+ },
+ {
+  "id": "Labs_CirclePillars_P",
+  "name": "Labs Circle Pillars"
+ },
+ {
+  "id": "Labs_PillarGlass_P",
+  "name": "Labs Pillar Glass"
+ },
+ {
+  "id": "Labs_PillarHeat_P",
+  "name": "Labs Pillar Heat"
+ },
+ {
+  "id": "Labs_PillarWings_P",
+  "name": "Labs Pillar Wings"
+ },
+ {
+  "id": "Labs_Galleon_P",
+  "name": "Labs Galleon"
+ },
+ {
+  "id": "Labs_Galleon_Mast_P",
+  "name": "Labs Galleon Mast"
+ },
+ {
+  "id": "Labs_Holyfield_P",
+  "name": "Labs Holyfield"
+ },
+ {
+  "id": "Labs_Holyfield_Space_P",
+  "name": "Labs Holyfield Space"
+ },
+ {
+  "id": "Labs_Basin_P",
+  "name": "Labs Basin"
+ },
+ {
+  "id": "Labs_Corridor_P",
+  "name": "Labs Corridor"
+ },
+ {
+  "id": "Labs_4v4_Arena15_Blackout_P",
+  "name": "Labs 4v4 Arena15 Blackout"
+ },
+ {
+  "id": "Labs_4v4_Arena15_EuroStadium_Night_P",
+  "name": "Labs 4v4 Arena15 Euro Stadium Night"
+ },
+ {
+  "id": "Labs_4v4_Arena15_Retro_P",
+  "name": "Labs 4v4 Arena15 Retro"
+ }
+]

@@ -1,0 +1,42 @@
+{
+  "source": "Local the reference app 1.8.4 /s/geam captures, 2026-11-24",
+  "note": "Each matching JSON contains only the original Garage control values; timestamps are read from capture runtime metadata.",
+  "captures": {
+    "camber0": {
+      "bytes": 9867,
+      "sha256": "ff6ad182c9dde7b0435a187a57fb8584997b08ce744d56afa0f22c8000e8a432"
+    },
+    "distinct": {
+      "bytes": 9867,
+      "sha256": "ff878427f048b268518b8f14c8279e0435d041e3d534cea3d48b5b37342b3741"
+    },
+    "head-rainbows": {
+      "bytes": 9867,
+      "sha256": "bf3dd08d44d25026bb914c514fab19f802948bd00db1fdf660fac5c825b436ff"
+    },
+    "speed100": {
+      "bytes": 9867,
+      "sha256": "c7e2e98270e649350e811053e3cd3bd1576f26193869acbde4cdec752468a4ed"
+    },
+    "speed7": {
+      "bytes": 9867,
+      "sha256": "34599b7665c19dbfcb34e49321d0fb6d3836915b4e8fad9b4bfcbeb80e2f7d03"
+    },
+    "tail-rainbows": {
+      "bytes": 9867,
+      "sha256": "79d5ebec8c758fddb3eb830b8b3b95033ad67be4d9d84b6431ac15b6aeb64352"
+    },
+    "under0-rainbow-off": {
+      "bytes": 9867,
+      "sha256": "b383e8e62b5eaa7d815404e3bbfd0b8a8c3562c27c996a68c319b90d13ee388e"
+    },
+    "under1-rainbow-off": {
+      "bytes": 9867,
+      "sha256": "f75cec4fe84e9ba5ef61b31c3f9ccd012fc85e423ff54e52c673676e5181c32c"
+    },
+    "under1-rainbow-on": {
+      "bytes": 9867,
+      "sha256": "44d79cbc06effa2447e9b7d4e5fbd9573272fe8a1e12c07526aa2c976eaad952"
+    }
+  }
+}

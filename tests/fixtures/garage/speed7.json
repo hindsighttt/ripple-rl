@@ -1,0 +1,120 @@
+{
+  "garage": {
+    "camber": {
+      "deg": -13.7,
+      "ud": 1.4,
+      "lr": -2.7
+    },
+    "underglow": [
+      {
+        "on": true,
+        "color": "#112233",
+        "level": 1
+      },
+      {
+        "on": true,
+        "color": "#445566",
+        "level": 10
+      }
+    ],
+    "headlights": [
+      {
+        "on": true,
+        "color": "#223344",
+        "level": 1
+      },
+      {
+        "on": true,
+        "color": "#556677",
+        "level": 15
+      }
+    ],
+    "taillights": [
+      {
+        "on": true,
+        "color": "#334455",
+        "level": 7
+      },
+      {
+        "on": true,
+        "color": "#667788",
+        "level": 20
+      }
+    ]
+  },
+  "paint": {
+    "rainbowSpeed": 7,
+    "underglowRainbow": [
+      false,
+      true
+    ],
+    "headlightsRainbow": [
+      true,
+      true
+    ],
+    "taillightsRainbow": [
+      true,
+      true
+    ],
+    "primary": [
+      {
+        "on": true,
+        "color": "#010203",
+        "rainbow": true
+      },
+      {
+        "on": true,
+        "color": "#070809",
+        "rainbow": true
+      }
+    ],
+    "secondary": [
+      {
+        "on": false,
+        "color": "#020304",
+        "rainbow": false
+      },
+      {
+        "on": false,
+        "color": "#08090a",
+        "rainbow": false
+      }
+    ],
+    "trim": [
+      {
+        "on": true,
+        "color": "#030405",
+        "rainbow": false
+      },
+      {
+        "on": true,
+        "color": "#090a0b",
+        "rainbow": false
+      }
+    ],
+    "wheels": [
+      {
+        "on": false,
+        "color": "#040506",
+        "rainbow": true
+      },
+      {
+        "on": false,
+        "color": "#0a0b0c",
+        "rainbow": true
+      }
+    ],
+    "boost": [
+      {
+        "on": true,
+        "color": "#050607",
+        "rainbow": false
+      },
+      {
+        "on": true,
+        "color": "#0b0c0d",
+        "rainbow": false
+      }
+    ]
+  }
+}

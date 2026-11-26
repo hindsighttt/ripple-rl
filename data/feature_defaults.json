@@ -1,0 +1,456 @@
+{
+ "garage": {
+  "camber": {
+   "deg": 0,
+   "lr": 0,
+   "ud": 0
+  },
+  "flipColor": -1,
+  "headlights": [
+   {
+    "color": "#ffffff",
+    "level": 10,
+    "on": false
+   },
+   {
+    "color": "#ffffff",
+    "level": 10,
+    "on": false
+   }
+  ],
+  "taillights": [
+   {
+    "color": "#ffffff",
+    "level": 10,
+    "on": false
+   },
+   {
+    "color": "#ffffff",
+    "level": 10,
+    "on": false
+   }
+  ],
+  "underglow": [
+   {
+    "color": "#ffffff",
+    "level": 10,
+    "on": false
+   },
+   {
+    "color": "#ffffff",
+    "level": 10,
+    "on": false
+   }
+  ]
+ },
+ "paint": {
+  "plus": true,
+  "rainbowSpeed": 20,
+  "primary": [
+   {
+    "color": "#ffffff",
+    "on": false,
+    "rainbow": false
+   },
+   {
+    "color": "#ffffff",
+    "on": false,
+    "rainbow": false
+   }
+  ],
+  "secondary": [
+   {
+    "color": "#ffffff",
+    "on": false,
+    "rainbow": false
+   },
+   {
+    "color": "#ffffff",
+    "on": false,
+    "rainbow": false
+   }
+  ],
+  "trim": [
+   {
+    "color": "#ffffff",
+    "on": false,
+    "rainbow": false
+   },
+   {
+    "color": "#ffffff",
+    "on": false,
+    "rainbow": false
+   }
+  ],
+  "wheels": [
+   {
+    "color": "#ffffff",
+    "on": false,
+    "rainbow": false
+   },
+   {
+    "color": "#ffffff",
+    "on": false,
+    "rainbow": false
+   }
+  ],
+  "boost": [
+   {
+    "color": "#ffffff",
+    "on": false,
+    "rainbow": false
+   },
+   {
+    "color": "#ffffff",
+    "on": false,
+    "rainbow": false
+   }
+  ],
+  "headlightsRainbow": [
+   false,
+   false
+  ],
+  "taillightsRainbow": [
+   false,
+   false
+  ],
+  "underglowRainbow": [
+   false,
+   false
+  ]
+ },
+ "match": {
+  "alphaAll": false,
+  "autoGG": false,
+  "autoSaveReplay": false,
+  "boostResetKey": "",
+  "boostUsed": false,
+  "plus": true,
+  "statusOn": false,
+  "statusPlus": true,
+  "statusText": "",
+  "unanonymize": false
+ },
+ "misc.match": {
+  "binds": [
+   {
+    "label": "F8",
+    "vk": 119
+   },
+   {
+    "label": "",
+    "vk": 0
+   },
+   {
+    "label": "",
+    "vk": 0
+   },
+   {
+    "label": "",
+    "vk": 0
+   }
+  ],
+  "frozen": false,
+  "teamChangePrivateOnly": true
+ },
+ "ping": {
+  "enabled": false,
+  "max": 100,
+  "min": 0,
+  "plus": true,
+  "random": false,
+  "showOwn": true,
+  "value": 0,
+  "own": true
+ },
+ "platform": {
+  "enabled": false,
+  "goal": true,
+  "hideSteamAvatars": false,
+  "lobby": true,
+  "offsetX": 93,
+  "offsetY": 0,
+  "ranked": false,
+  "scoreboardBtnLbl": "",
+  "scoreboardButton": 0,
+  "scoreboardKey": "",
+  "sizePercent": 122,
+  "steamActive": false,
+  "steamAvatars": true,
+  "steamProfileUrl": "",
+  "uiScale": 0.75,
+  "displayScale": 0.95
+ },
+ "qc": {
+  "enabled": true,
+  "entries": [],
+  "keys": [
+   {
+    "label": "",
+    "vk": 0
+   },
+   {
+    "label": "",
+    "vk": 0
+   },
+   {
+    "label": "",
+    "vk": 0
+   }
+  ]
+ },
+ "overlay": {
+  "kbm": {
+   "enabled": false,
+   "layout": 0,
+   "onlyInGame": false,
+   "showUnfocused": false
+  },
+  "pad": {
+   "controllerCount": 1,
+   "enabled": false,
+   "onlyInGame": false,
+   "showUnfocused": false,
+   "skin": 0,
+   "skins": [
+    "PlayStation 5 (DualSense)",
+    "PlayStation 4 (Black)",
+    "PlayStation 4 (Red/White)",
+    "Xbox (White)"
+   ]
+  }
+ },
+ "game": {
+  "ballBounciness": 100,
+  "ballCount": 1,
+  "ballScale": 100,
+  "carMaxSpeed": 100,
+  "carScale": 100,
+  "goalMessage": true,
+  "gravity": -650,
+  "hideRanks": false,
+  "infiniteJump": false,
+  "mmrPlaylist": "auto",
+  "mutators": {
+   "AudioRules": "",
+   "BallGravity": "",
+   "BallMaxSpeed": "",
+   "BallType": "",
+   "BallWeight": "",
+   "BoostPadRespawnTime": "",
+   "BoostRestriction": "",
+   "BoosterStrengths": "",
+   "DodgeInputTimer": "",
+   "GameMode": "",
+   "GameSpeed": "",
+   "InputRestriction": "",
+   "Rumble": ""
+  },
+  "showMMR": true,
+  "showRank": true,
+  "weather": "off"
+ },
+ "fakerank": {
+  "active": false,
+  "autoStart": false,
+  "overrides": [],
+  "divisions": [
+   "Division I",
+   "Division II",
+   "Division III",
+   "Division IV"
+  ],
+  "reward": {
+   "active": false,
+   "level": 0,
+   "wins": 0
+  },
+  "rewardLevels": [
+   "None",
+   "Bronze",
+   "Silver",
+   "Gold",
+   "Platinum",
+   "Diamond",
+   "Champion",
+   "Grand Champion",
+   "Supersonic Legend"
+  ],
+  "playlists": [
+   {
+    "id": 10,
+    "name": "Duel (1v1)"
+   },
+   {
+    "id": 11,
+    "name": "Doubles (2v2)"
+   },
+   {
+    "id": 13,
+    "name": "Standard (3v3)"
+   },
+   {
+    "id": 27,
+    "name": "Hoops"
+   },
+   {
+    "id": 28,
+    "name": "Rumble"
+   },
+   {
+    "id": 29,
+    "name": "Dropshot"
+   },
+   {
+    "id": 30,
+    "name": "Snow Day"
+   },
+   {
+    "id": 34,
+    "name": "Tournaments"
+   },
+   {
+    "id": 63,
+    "name": "Heatseeker"
+   },
+   {
+    "id": 0,
+    "name": "Casual"
+   }
+  ],
+  "tiers": [
+   "Unranked",
+   "Bronze I",
+   "Bronze II",
+   "Bronze III",
+   "Silver I",
+   "Silver II",
+   "Silver III",
+   "Gold I",
+   "Gold II",
+   "Gold III",
+   "Platinum I",
+   "Platinum II",
+   "Platinum III",
+   "Diamond I",
+   "Diamond II",
+   "Diamond III",
+   "Champion I",
+   "Champion II",
+   "Champion III",
+   "Grand Champion I",
+   "Grand Champion II",
+   "Grand Champion III",
+   "Supersonic Legend"
+  ]
+ },
+ "titles": {
+  "canAdd": true,
+  "enabled": true,
+  "max": 3,
+  "plus": true,
+  "titles": []
+ },
+ "tracker": {
+  "blue": 0,
+  "blueTeam": [],
+  "inMatch": false,
+  "orange": 0,
+  "orangeTeam": [],
+  "playlist": "2v2",
+  "rank": {
+   "mmr": 0,
+   "name": "Unranked",
+   "tier": 0
+  },
+  "ranksHidden": false,
+  "session": {
+   "losses": 0,
+   "streak": 0,
+   "wins": 0
+  }
+ },
+ "tracker.settings": {
+  "ballDecimals": 2,
+  "ballEnabled": false,
+  "ballUnit": "kmh",
+  "overlayHotkey": "Tab",
+  "overlayMode": "hidden",
+  "overlayPad": 0,
+  "overlayPadName": "",
+  "overlayPlaylist": "2v2",
+  "overlayStyle": "compact",
+  "playlistHotkey": "Ctrl+G",
+  "playlistPad": 0,
+  "playlistPadName": "",
+  "rosterDisplayScale": 0.95,
+  "rosterEnabled": false,
+  "rosterHotkey": "Tab",
+  "rosterPad": 0,
+  "rosterPadName": "",
+  "rosterShowDivision": true,
+  "rosterShowMmr": true,
+  "rosterShowPlaylist": true,
+  "rosterShowRank": true,
+  "rosterUiScale": 0.75
+ },
+ "sounds": {
+  "alphaBoost": false,
+  "cues": [
+   {
+    "applied": "",
+    "id": "flip_reset",
+    "label": "Flip reset",
+    "volume": 100
+   }
+  ]
+ },
+ "rlsettings": {
+  "account": "",
+  "canUndo": false,
+  "copies": [],
+  "found": true,
+  "platform": "Epic",
+  "running": false
+ },
+ "cust.palette": {
+  "enabled": true,
+  "plus": true
+ },
+ "cust.cameraCaps": {
+  "enabled": false,
+  "plus": true
+ },
+ "credits": {
+  "amount": 0,
+  "credits": 0,
+  "enabled": false,
+  "live": false,
+  "plus": true,
+  "shopPurchases": true,
+  "tournament": 0,
+  "tournamentCurrencyId": 0
+ },
+ "mp": {
+  "active": false,
+  "host": false,
+  "map": "",
+  "mapId": 0,
+  "matchUp": false,
+  "pseudo": "",
+  "ready": true,
+  "roomMap": ""
+ },
+ "invite": {
+  "access": false,
+  "armed": false
+ },
+ "fps": {
+  "on": false
+ },
+ "spoof": {
+  "friends": [],
+  "running": false,
+  "status": "Stopped"
+ }
+}
