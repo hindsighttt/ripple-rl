@@ -20,7 +20,7 @@
 #include <stdexcept>
 
 namespace {
-const char* kVersion = "1.8.4";  // keep in sync with bridge.py VERSION
+const char* kVersion = "1.8.5";  // keep in sync with bridge.py VERSION
 constexpr char kRouletteStateFile[] = "feature_roulette.json";  // shared with garage_wire.py
 
 // bool(p["value"]) with Python-ish truthiness for the common json types.

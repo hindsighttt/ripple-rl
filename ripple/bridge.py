@@ -3,7 +3,7 @@ from PySide6.QtCore import QObject, Slot, Signal, QTimer
 import copy
 from . import store, catalog, swaps, packs, workshop, features, spawn, social, upk, proxy, quickchat, bootstrap, garage_patch, flip_patch, titles_config
 
-VERSION = "1.8.4"
+VERSION = "1.8.5"
 
 
 _rl_cache = {"t": 0.0, "v": False}

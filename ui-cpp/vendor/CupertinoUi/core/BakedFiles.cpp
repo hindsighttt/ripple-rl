@@ -10,9 +10,13 @@ namespace Cupertino {
         return {reinterpret_cast<const unsigned char*>(found->words), found->size};
     }
 
-#if __has_include("generated/BakedFonts.inc")
+#if defined(RIPPLE_RL_USE_INSTRUMENT_SANS) || __has_include("generated/BakedFonts.inc")
     namespace Baked {
+#if defined(RIPPLE_RL_USE_INSTRUMENT_SANS)
+#include "RippleFonts.inc"
+#else
 #include "generated/BakedFonts.inc"
+#endif
     } // namespace Baked
 
     std::span<const BakedFile> BakedFonts() {

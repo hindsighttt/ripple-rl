@@ -1,4 +1,28 @@
-# Ripple RL — single-executable packaging
+# Packaging Ripple RL
+
+## Portable public build
+
+From an x64 Visual Studio developer PowerShell, with CMake and Ninja on `PATH`,
+run the following from the repository root. Use 64-bit Windows Python 3.12 with
+`pycryptodome` installed, and supply the local Instrument Sans font as described
+in the [README](README.md#build-and-run-on-windows).
+
+```powershell
+.\packaging\bundle-portable.ps1 -Python C:\Python312\python.exe
+```
+
+The script builds the version declared in `MenuAssets.rc`, uses Instrument Sans
+for the desktop font slots, and writes `dist/Ripple-RL-v<VERSION>-Windows-x64.zip`.
+The ZIP includes the offline patch runtime, the versioned recipes, and the FPS
+capture utility. The launcher starts with the network proxy disabled.
+
+To check the release, extract it to a separate folder and start it with a clean
+Ripple RL profile. Point the app at copies of the five hash-verified Epic packages.
+Run **Re-apply garage patch**, **Revert to vanilla**, and **Re-apply garage patch**
+in Maintenance. Compare all five outputs on each apply with `patchedSha256` and
+the reverted files with `vanillaSha256` in `data/garage-recipe.json`.
+
+## Local build with proxy runtime
 
 The goal of the C++ port: ship Ripple RL as **one executable plus a `runtime\`
 folder**, with no separate backend process and no Python install required on the

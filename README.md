@@ -19,6 +19,12 @@ app. It also includes tools for overlays, quick chat, and preset management.
 
 ## Build and run on Windows
 
+To use Ripple RL without building it, download the Windows x64 ZIP from
+[GitHub Releases](https://github.com/hindsighttt/ripple-rl/releases/latest).
+Extract the entire ZIP and open **Launch Ripple RL.cmd**. The portable build
+includes the runtime for Garage and package patches and starts with the network
+proxy disabled.
+
 Install the Visual Studio **Desktop development with C++** workload, CMake 3.25
 or newer, and Ninja. Put a local copy of the Instrument Sans Medium TrueType font
 at `ui-cpp/assets/InstrumentSans-Medium.ttf`, the path used by the Windows
@@ -33,10 +39,9 @@ ui-cpp\build\bin\ripple_rl.exe
 ```
 
 `RIPPLE_RL_NO_PROXY=1` disables automatic proxy startup for that development
-session. The checkout contains source and recipe data. The build outputs, binary
-fixtures, legacy web UI artwork, and local proxy add-on stay outside Git. Features
-that depend on the proxy add-on require a local copy. The optional runtime
-bundling workflow is described in [PACKAGING.md](PACKAGING.md).
+session. The checkout contains source and recipe data. Build outputs, binary
+fixtures, legacy web UI artwork, and the local proxy add-on stay outside Git.
+See [PACKAGING.md](PACKAGING.md) for portable build instructions.
 
 ## Garage patches
 
