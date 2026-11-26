@@ -2,7 +2,7 @@
 
 Ripple RL is a Windows desktop companion for Rocket League. It brings Garage
 customization, cosmetic item swaps, and local game-file patch management into one
-app. It also includes tools for overlays, quick chat, and preset management.
+app. It also includes match tracking and performance overlays.
 
 ## Features
 
@@ -14,8 +14,8 @@ app. It also includes tools for overlays, quick chat, and preset management.
 - **Patch maintenance** shows the status of the Garage packages and lets you
   re-apply or revert them. Separately, the package writer and recipe tools let
   developers build and validate experimental edits to local game packages.
-- **Utilities** include configurable quick-chat shortcuts, overlays for FPS and
-  ball speed, and saved presets.
+- **Utilities** include match tracking and overlays for player rosters, FPS,
+  and ball speed.
 
 ## Build and run on Windows
 

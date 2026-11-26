@@ -60,7 +60,7 @@ private:
     using Page = Workspace::Page;
     Page page_ = Page::Home;
     int previewTab_ = 0;
-    int settingsTab_ = 1;
+    int settingsTab_ = 0;
     std::string sidebarSearch_;
     bool resetItemBrowser_ = true;
 

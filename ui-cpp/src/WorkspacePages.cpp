@@ -41,22 +41,15 @@ namespace Workspace {
         using enum Page;
 
         constexpr Page general[] = {Home};
-        constexpr Page items[] = {Items, Spawn, Active, Presets, DropOpening, Drops, Credits, Simulations};
-        constexpr Page customization[] = {
-            Garage, CustomBall, CustomDecals, BoostMeter, Sounds, Workshop, Weather, AprilFools, MapChanger,
-            MapMerger, CustomCars, CarPalette, Camera, Stadium,
-        };
-        constexpr Page inGame[] = {FreePlay, Mutators, MatchOptions, RocketLeagueSettings};
-        constexpr Page plugins[] = {InstantSuite, ResetCounter, ImpulseSetup, Tas};
-        constexpr Page profile[] = {PlatformDisplay, Titles, FakeRank};
-        constexpr Page online[] = {PingSpoof, Invite, Multiplayer, FakeFriends};
-        constexpr Page tools[] = {Tracker, FpsCounter, QuickChat, MatchBinds, Overlay, ReplayEditor};
+        constexpr Page items[] = {Items, Spawn, DropOpening};
+        constexpr Page customization[] = {Garage};
+        constexpr Page profile[] = {Titles};
+        constexpr Page tools[] = {Tracker, FpsCounter};
         constexpr Page application[] = {Settings};
 
         constexpr Group groups[] = {
             {"General", general}, {"Items", items}, {"Customization", customization},
-            {"In game", inGame}, {"Plugins", plugins}, {"Profile", profile}, {"Online", online},
-            {"Tools", tools}, {"Application", application},
+            {"Profile", profile}, {"Tools", tools}, {"Application", application},
         };
 
         const Destination destinations[] = {
@@ -207,8 +200,7 @@ namespace Workspace {
 
             {Tracker, "Tracker", {
                 {"Match", {}},
-                {"Settings", {{"Rank and MMR", {{"Show MMR", Check}, {"Show rank", Check}, {"Playlist", Choice}, {"Shortcut"}}},
-                              {"Session overlay", {{"Style", RosterStyle, "overlayStyle"},
+                {"Settings", {{"Session overlay", {{"Style", RosterStyle, "overlayStyle"},
                                                    {"Visibility", Visibility, "rosterEnabled"}}},
                               {"Ball speed overlay", {{"Enable", Check, "ballEnabled"}, {"Unit", BallUnit, "ballUnit"},
                                                       {"Decimals", Decimals, "ballDecimals"}}}}},
@@ -480,7 +472,7 @@ namespace Workspace {
         ImGui::PushFont(ImGui::GetIO().FontDefault, Px(23));
         ImGui::TextUnformatted(spec.title);
         ImGui::PopFont();
-        if (page != FpsCounter && page != Tracker) {
+        if (page != FpsCounter && page != Tracker && page != DropOpening) {
             constexpr const char* preview = "UI preview";
             ImGui::SameLine(right - ImGui::CalcTextSize(preview).x);
             ImGui::TextDisabled("%s", preview);

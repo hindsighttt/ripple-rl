@@ -346,10 +346,6 @@ void App::RenderContent() {
         WorkspaceSettingsPanel(rouletteSettings_, "roulette.get", "roulette.set");
         return;
     }
-    if (Workspace::IsPreview(page_)) {
-        Workspace::Render(page_, previewTab_);
-        return;
-    }
     if (!backend_.Connected()) {
         ImGui::TextDisabled("Connecting to the Ripple RL backend...");
         return;
@@ -653,12 +649,13 @@ void App::GaragePatchPanel() {
 
 void App::SettingsPanel() {
     HomeTitle("Settings", 23);
-    constexpr const char* tabs[] = {"General", "Rocket League", "Maintenance", "About"};
+    constexpr const char* tabs[] = {"Rocket League", "Maintenance"};
+    constexpr int maintenanceTab = 1;
     for (int i = 0; i < IM_ARRAYSIZE(tabs); ++i) {
         if (i > 0)
             ImGui::SameLine();
         if (MenuWidgets::Tab(tabs[i], settingsTab_ == i)) {
-            if (i == 2 && settingsTab_ != 2) {
+            if (i == maintenanceTab && settingsTab_ != maintenanceTab) {
                 if (!packagePatches_.busy) packagePatches_.values = nullptr;
                 if (!garagePatch_.busy) garagePatch_.values = nullptr;
             }
@@ -667,17 +664,7 @@ void App::SettingsPanel() {
     }
     ImGui::Spacing();
     const MenuWidgets::ContentFade tabEntrance("##settingsEntrance", settingsTab_);
-    if (settingsTab_ == 0) {
-        ImGui::TextDisabled("UI preview");
-        Workspace::RenderGeneralSettings();
-        return;
-    }
-    if (settingsTab_ == 3) {
-        ImGui::TextDisabled("UI preview");
-        Workspace::RenderAbout();
-        return;
-    }
-    if (settingsTab_ == 2) {
+    if (settingsTab_ == maintenanceTab) {
         MenuTheme::Section("Files");
         if (MenuWidgets::Button("Open backup folder"))
             backend_.Request("settings.openBackupFolder", {});
@@ -685,9 +672,6 @@ void App::SettingsPanel() {
         PackagePatchesPanel();
         ImGui::Spacing();
         GaragePatchPanel();
-        ImGui::Spacing();
-        ImGui::TextDisabled("UI preview");
-        Workspace::RenderMaintenancePreview();
         return;
     }
 

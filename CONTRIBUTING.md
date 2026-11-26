@@ -8,10 +8,12 @@ For a patch issue, include the affected package name and the status shown under
 **Settings → Maintenance → Garage patch**. Remove account information and local
 paths from any logs or screenshots you post.
 
-For a pull request, branch from `main`, describe the change and how you tested
-it, and mention which parts of the app it affects. For a desktop feature, check
-the path from the menu through the command dispatcher to the backend. For a
-saved setting, exercise both a fresh configuration and an existing one.
+Branch from `dev` when working on preview pages. `main` is the release branch
+and shows pages with working controls. For a pull request, describe the change
+and how you tested it, and mention which parts of the app it affects. For a
+desktop feature, check the path from the menu through the command dispatcher to
+the backend. For a saved setting, exercise both a fresh configuration and an
+existing one.
 
 ## Development setup
 
