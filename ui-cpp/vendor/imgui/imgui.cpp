@@ -4678,6 +4678,7 @@ ImGuiWindow::ImGuiWindow(ImGuiContext* ctx, const char* name) : DrawListInst(NUL
     ID = ImHashStr(name);
     IDStack.push_back(ID);
     MoveId = GetID("#MOVE");
+    WheelScrollTargetY = FLT_MAX;
     ScrollTarget = ImVec2(FLT_MAX, FLT_MAX);
     ScrollTargetCenterRatio = ImVec2(0.5f, 0.5f);
     AutoPosLastDirection = ImGuiDir_None;
@@ -8093,6 +8094,25 @@ bool ImGui::Begin(const char* name, bool* p_open, ImGuiWindowFlags flags)
 
         // Apply scrolling
         window->Scroll = CalcNextScrollFromScrollTargetAndClamp(window);
+        if (window->WheelScrollTargetY < FLT_MAX)
+        {
+            if (window->ScrollTarget.y < FLT_MAX || window->Appearing || window->Collapsed || window->ScrollMax.y == 0.0f
+                || (flags & (ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_NoMouseInputs)))
+                window->WheelScrollTargetY = FLT_MAX;
+            else
+            {
+                // Ease toward the queued wheel position with a 30 ms half-life.
+                const float target = window->WheelScrollTargetY = ImClamp(window->WheelScrollTargetY, 0.0f, window->ScrollMax.y);
+                const float position = ImClamp(window->WheelScrollY, 0.0f, window->ScrollMax.y);
+                window->WheelScrollY = ImLerp(target, position, ImPow(0.5f, g.IO.DeltaTime / 0.030f));
+                if (ImAbs(target - window->WheelScrollY) < 0.5f)
+                {
+                    window->WheelScrollY = target;
+                    window->WheelScrollTargetY = FLT_MAX;
+                }
+                window->Scroll.y = ImMin(ImRound64(window->WheelScrollY), window->ScrollMax.y);
+            }
+        }
         window->ScrollTarget = ImVec2(FLT_MAX, FLT_MAX);
         window->DecoInnerSizeX1 = window->DecoInnerSizeY1 = 0.0f;
 
@@ -10647,12 +10667,21 @@ void ImGui::UpdateMouseWheel()
                 SetScrollX(window, window->Scroll.x - wheel.x * scroll_step);
                 g.WheelingWindowScrolledFrame = g.FrameCount;
             }
-            if (do_scroll[ImGuiAxis_Y])
+            if (do_scroll[ImGuiAxis_Y] && g.ActiveId != GetWindowScrollbarID(window, ImGuiAxis_Y))
             {
                 LockWheelingWindow(window, wheel.y);
                 float max_step = window->InnerRect.GetHeight() * 0.67f;
                 float scroll_step = ImTrunc(ImMin(5 * window->FontRefSize, max_step));
-                SetScrollY(window, window->Scroll.y - wheel.y * scroll_step);
+                const float delta = -wheel.y * scroll_step;
+                if (window->WheelScrollTargetY == FLT_MAX)
+                {
+                    window->WheelScrollY = window->Scroll.y;
+                    window->WheelScrollTargetY = window->Scroll.y;
+                }
+                // Reverse from the current position so a queued burst can't fight the new input.
+                if ((window->WheelScrollTargetY - window->WheelScrollY) * delta < 0.0f)
+                    window->WheelScrollTargetY = window->WheelScrollY;
+                window->WheelScrollTargetY = ImClamp(window->WheelScrollTargetY + delta, 0.0f, window->ScrollMax.y);
                 g.WheelingWindowScrolledFrame = g.FrameCount;
             }
         }

@@ -74,13 +74,17 @@ UPK codec (RL's cooked-compression format proved too costly to reimplement relia
   copy of the game, validated by summary counts (TAGame +83 names / +211 exports / +2 imports,
   matching the SSP3 manifest exactly). Stored in `%APPDATA%\RippleRL\backups\ground-truth\`
   (`before/`, `after/`, `patch-manifest.json`).
-- `ripple/garage_patch.py`: `status` / `apply` / `revert`, keyed by each package's
+- The original installer exposed `status`, `apply`, and `revert`, keyed by each package's
   vanilla sha256. apply is byte-exact (writes Ripple RL's own output), backs up vanilla, verifies
   the patched hash, is idempotent, and **fail-safe** — a package whose live hash is unknown
   (game updated) is skipped, never corrupted (proven by sandbox test).
-- Wired into `bridge.home_launch` (auto-apply before launch, best-effort) and exposed as bridge
+- Applied before launch and exposed as
   commands `garage.patch.status|apply|revert`. Patch persists on exit (consistent with the
   ProjectX-on-exit decision); revert is manual.
+
+The [native Garage installer](../backend-cpp/src/Garage.cpp) now uses the
+[shipped recipe](ssp3-format.md#restoring-the-epic-garage-patches-after-file-verification)
+to build the packages for the supported Epic release.
 
 Result: with the patch applied, RL's in-game Premium Garage gains the Underglow/Lights/Camber/
 Paint tabs and the in-car bytecode renders them — i.e. the whole garage-visual feature set.
@@ -164,12 +168,13 @@ is pending.
 
 ### Flip-reset startup patch implemented
 
-flip_patch.py reproduces the complete native TAGame #123ABC output byte-exactly. It edits
+The original Python prototype reproduced the complete native TAGame #123ABC output byte-exactly. It edited
 eight material floats [R,B,R,G,B,R,G,B], preserving the exact game's default floats for
 reset. It recompresses only the affected block with level9 and updates the encrypted
 chunk-map size, retaining other compressed blocks and the SHFTRLC1 footer. Preparation
 accepts the manifest-verified base or our last installed hash, saves a backup, and writes
-atomically. home_launch calls it after the five garage packages.
+atomically. The [current native launch path](../backend-cpp/src/Home.cpp) calls
+the C++ builder after applying the five Garage packages.
 
 The user has taken over all live visual testing; computer use is stopped. HTTP delivery
 and launch application are verified, while visual effects await the user's report.

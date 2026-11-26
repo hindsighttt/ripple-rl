@@ -51,13 +51,12 @@ namespace Workspace {
         constexpr Page profile[] = {PlatformDisplay, Titles, FakeRank};
         constexpr Page online[] = {PingSpoof, Invite, Multiplayer, FakeFriends};
         constexpr Page tools[] = {Tracker, FpsCounter, QuickChat, MatchBinds, Overlay, ReplayEditor};
-        constexpr Page help[] = {Features, Tutorial, Updates};
         constexpr Page application[] = {Settings};
 
         constexpr Group groups[] = {
             {"General", general}, {"Items", items}, {"Customization", customization},
             {"In game", inGame}, {"Plugins", plugins}, {"Profile", profile}, {"Online", online},
-            {"Tools", tools}, {"Help", help}, {"Application", application},
+            {"Tools", tools}, {"Application", application},
         };
 
         const Destination destinations[] = {
@@ -234,22 +233,6 @@ namespace Workspace {
                 {"Replay", {{"Open replay", Action}}},
                 {"Preview", {}, {}, true},
                 {"Timeline", {{"Playback position", Slider}}},
-            }}}},
-
-            {Features, "Features", {{nullptr, {
-                {"Feature overview", {{"Search features"}}},
-            }}}},
-            {Tutorial, "Tutorial", {
-                {"Items", {{"Item swaps", {}}}},
-                {"Custom Ball", {{"Ball packs", {}}}},
-                {"Custom Decals", {{"Decal packs", {}}}},
-                {"Boost Meter", {{"Boost meter packs", {}}}},
-                {"Workshop", {{"Workshop maps", {}}}},
-                {"Tracker", {{"Match data and overlays", {}}}},
-            }},
-            {Updates, "Updates", {{nullptr, {
-                {"Release notes", {}},
-                {"Updates", {{"Check for updates", Action}}},
             }}}},
         };
 

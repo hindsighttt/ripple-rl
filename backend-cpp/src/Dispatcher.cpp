@@ -20,7 +20,7 @@
 #include <stdexcept>
 
 namespace {
-const char* kVersion = "1.8.5";  // keep in sync with bridge.py VERSION
+const char* kVersion = "1.8.5";
 constexpr char kRouletteStateFile[] = "feature_roulette.json";  // shared with garage_wire.py
 
 // bool(p["value"]) with Python-ish truthiness for the common json types.
@@ -151,7 +151,7 @@ void Dispatcher::Register() {
     handlers_["settings.repair"] = [](const json&) { return json{{"ok", true}}; };
     handlers_["home.launch"] = [this](const json& p) {
         json r = home::Launch(p, *proxy_);
-        Emit("home.launchResult", json{{"error", ""}});
+        Emit("home.launchResult", json{{"error", ""}, {"chooseInEpic", r.value("chooseInEpic", false)}});
         return r;
     };
 
@@ -498,7 +498,7 @@ void Dispatcher::Dispatch(const json& msg) {
 
     try {
         // Window-chrome shims: the native window owns its own chrome, so just
-        // forward the intent as an event (mirrors main_cpp.py's IpcApp).
+        // forward the intent as an event.
         if (type == "win.minimize" || type == "win.maximize" || type == "win.close") {
             Emit("win.command", json{{"action", type.substr(4)}});
             if (hasId) server_->Broadcast(json{{"type", "reply"}, {"id", id}, {"payload", json::object()}});

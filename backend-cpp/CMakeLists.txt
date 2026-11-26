@@ -53,7 +53,7 @@ target_link_libraries(ripple_core PUBLIC ws2_32 advapi32 bcrypt shell32 user32 g
 # CLI/standalone targets are only built when this is the top-level project, so
 # add_subdirectory() from ui-cpp builds just the ripple_core library.
 if (PROJECT_IS_TOP_LEVEL)
-    # Standalone backend process (drop-in replacement for main_cpp.py).
+    # Standalone backend process for development and verification.
     add_executable(ripple_backend src/main.cpp)
     target_link_libraries(ripple_backend PRIVATE ripple_core)
 

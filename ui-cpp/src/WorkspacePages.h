@@ -15,7 +15,6 @@ namespace Workspace {
         InstantSuite, ResetCounter, ImpulseSetup, Tas,
         PlatformDisplay, FakeRank, PingSpoof, Invite, Multiplayer, FakeFriends,
         Tracker, FpsCounter, QuickChat, MatchBinds, Overlay, ReplayEditor,
-        Features, Tutorial, Updates,
     };
 
     struct Group {

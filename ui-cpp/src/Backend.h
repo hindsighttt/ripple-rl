@@ -1,7 +1,6 @@
 #pragma once
 
-// Backend: the client side of the local JSON bridge to the Python backend
-// (ripple/ipcserver.py). Line-delimited JSON over a loopback TCP socket.
+// Client for the native backend's line-delimited JSON over loopback TCP.
 // Requests are sent from the UI thread; replies and pushed events are delivered
 // back on the UI thread during Poll(), so panel code never needs locking.
 

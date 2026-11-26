@@ -25,8 +25,8 @@ or launch Rocket League.
   [the Garage installer](../backend-cpp/src/Garage.cpp). The supported Epic recipe
   generates and verifies the replacement from a backed-up baseline. Legacy targets
   still use the captured-package installer when matching patch data is present.
-- The existing [flip-reset color builder](../ripple/flip_patch.py) edits a known
-  material in the patched `TAGame.upk` base and recompresses the affected block. The
+- The [native Garage installer](../backend-cpp/src/Garage.cpp) edits a known
+  material in the patched `TAGame.upk` base to change the flip-reset color. The
   [ProjectX package code](../ripple/bootstrap.py) is a separate, specialized package
   reader and writer. Main and Lite have no ProjectX records.
 

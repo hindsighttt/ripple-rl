@@ -2,7 +2,6 @@ import os, json, time, threading, copy
 
 APP_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(APP_DIR, "data")
-UI_DIR = os.path.join(APP_DIR, "ui")
 STATE_DIR = os.path.join(os.environ.get("APPDATA", APP_DIR), "RippleRL")
 PACKS_DIR = os.path.join(STATE_DIR, "packs")
 WORKSHOP_DIR = os.path.join(STATE_DIR, "workshop")

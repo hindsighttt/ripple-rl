@@ -301,10 +301,13 @@ json Launch(const json& p, ProxyManager& proxy) {
 
     std::string src = s.value("target", json::object()).value("source", std::string(""));
     bool noEac = p.value("noEac", false);
-    if (src == "Epic" && !noEac) {
-        ShellExecuteW(nullptr, L"open",
-                      L"com.epicgames.launcher://apps/Sugar?action=launch&silent=true", nullptr, nullptr,
-                      SW_SHOWNORMAL);
+    const bool chooseInEpic = src == "Epic" && noEac;
+    if (src == "Epic") {
+        // A direct game start can redirect through Epic and lose the selected mode.
+        const wchar_t* uri = chooseInEpic ? L"com.epicgames.launcher://store/library"
+                                         : L"com.epicgames.launcher://apps/Sugar?action=launch&silent=true";
+        if (reinterpret_cast<INT_PTR>(ShellExecuteW(nullptr, L"open", uri, nullptr, nullptr, SW_SHOWNORMAL)) <= 32)
+            throw std::runtime_error("Could not open the Epic Games Launcher.");
     } else {
         std::wstring cmd = L"\"" + exe.wstring() + L"\"";
         if (noEac) cmd += L" -noeac";
@@ -313,13 +316,13 @@ json Launch(const json& p, ProxyManager& proxy) {
         PROCESS_INFORMATION pi{};
         std::wstring dir = exe.parent_path().wstring();
         std::wstring mut = cmd;
-        if (CreateProcessW(nullptr, mut.data(), nullptr, nullptr, FALSE, CREATE_NO_WINDOW, nullptr,
-                           dir.c_str(), &si, &pi)) {
-            CloseHandle(pi.hProcess);
-            CloseHandle(pi.hThread);
-        }
+        if (!CreateProcessW(nullptr, mut.data(), nullptr, nullptr, FALSE, CREATE_NO_WINDOW, nullptr,
+                            dir.c_str(), &si, &pi))
+            throw std::runtime_error("Could not start Rocket League.");
+        CloseHandle(pi.hProcess);
+        CloseHandle(pi.hThread);
     }
-    return json{{"ok", true}, {"packagePatches", patchResults}};
+    return json{{"ok", true}, {"chooseInEpic", chooseInEpic}, {"packagePatches", patchResults}};
 }
 
 }  // namespace home

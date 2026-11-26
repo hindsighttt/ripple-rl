@@ -39,8 +39,7 @@
 *.db
 *.sqlite*
 /ui-cpp/vendor/CupertinoUi/core/generated/BakedFonts.inc
-/ui/index.html
-/ui/app.css
+/ui/
 
 # Local research, inventory, and key material
 /HANDOFF.md

@@ -1013,6 +1013,8 @@ void ImGui::Scrollbar(ImGuiAxis axis)
     ImS64 scroll = (ImS64)window->Scroll[axis];
     ScrollbarEx(bb, id, axis, &scroll, (ImS64)size_visible, (ImS64)size_contents, rounding_corners);
     window->Scroll[axis] = (float)scroll;
+    if (axis == ImGuiAxis_Y && g.ActiveId == id)
+        window->WheelScrollTargetY = FLT_MAX;
 }
 
 // Vertical/Horizontal scrollbar

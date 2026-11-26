@@ -40,7 +40,7 @@ ui-cpp\build\bin\ripple_rl.exe
 
 `RIPPLE_RL_NO_PROXY=1` disables automatic proxy startup for that development
 session. The checkout contains source and recipe data. Build outputs, binary
-fixtures, legacy web UI artwork, and the local proxy add-on stay outside Git.
+fixtures, and the local proxy add-on stay outside Git.
 See [PACKAGING.md](PACKAGING.md) for portable build instructions.
 
 ## Garage patches
@@ -67,7 +67,7 @@ Settings, presets, and backups are stored under `%APPDATA%\RippleRL`.
 | --- | --- |
 | [`ui-cpp/`](ui-cpp/) | Native Win32, Direct3D 11, and Dear ImGui desktop interface. |
 | [`backend-cpp/`](backend-cpp/) | C++ backend for settings, file operations, commands, and game integration. The desktop app hosts it in-process and talks to it over loopback IPC. |
-| [`ripple/`](ripple/) | Python tooling, the package writer, and the earlier backend implementation. |
+| [`ripple/`](ripple/) | Offline package writer, recipe tools, and modules for the optional local proxy. |
 | [`data/`](data/) | Catalogs, feature defaults, and version-specific patch recipes. |
 | [`tools/`](tools/) and [`tests/`](tests/) | Build and verification utilities and Python regression tests. |
 | [`docs/`](docs/) | Notes on the Garage package and save formats and feature implementation. |

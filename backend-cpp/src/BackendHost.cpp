@@ -21,7 +21,7 @@
 
 namespace {
 
-// Port of main_cpp.py IpcApp._on_stats: drive the overlays and push a throttled
+// Drive the overlays and push a throttled
 // tracker.changed event to the UI.
 void OnStats(const std::string& ev, const json& data, Overlays& overlays, IpcServer& server) {
     const bool clear = ev == "MatchDestroyed" || ev == "StatsDisconnected";

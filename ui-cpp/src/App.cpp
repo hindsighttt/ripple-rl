@@ -133,7 +133,12 @@ void App::OnEvent(const std::string& type, const json& payload) {
     } else if (type == "home.launchResult") {
         launchBusy_ = false;
         const auto error = Str(payload, "error");
-        Toast(error.empty() ? "Launch started" : error, error.empty());
+        if (!error.empty())
+            Toast(error, false);
+        else if (payload.value("chooseInEpic", false))
+            Toast("Choose Launch without EAC in the Epic Games Library.", true);
+        else
+            Toast("Launch started", true);
         PollHome(true);
     } else if (type == "app.toast") {
         Toast(Str(payload, "text"), payload.value("ok", true));
@@ -445,9 +450,13 @@ void App::HomePanel() {
         ImGui::SetNextItemWidth(ImMax(Px(100), ImGui::GetContentRegionAvail().x - buttonWidth - gap));
         MenuWidgets::Combo("##launchMode", &launchMode_, modes, IM_ARRAYSIZE(modes));
         ImGui::SameLine();
-        const bool launch = MenuWidgets::Button(launchBusy_ ? "Preparing..." : "Launch Rocket League",
+        const bool chooseInEpic = install == "Epic" && launchMode_ == 1;
+        const char* launchLabel = chooseInEpic ? "Open Epic Library" : "Launch Rocket League";
+        const bool launch = MenuWidgets::Button(launchBusy_ ? "Preparing..." : launchLabel,
                                                 ImVec2(buttonWidth, 0), true);
         ImGui::EndDisabled();
+        if (chooseInEpic)
+            ImGui::TextWrapped("In the Epic Games Library, open the Rocket League menu and choose Launch without EAC.");
         if (launch) {
             launchBusy_ = true;
             backend_.Request("home.launch", {{"noEac", launchMode_ == 1}},

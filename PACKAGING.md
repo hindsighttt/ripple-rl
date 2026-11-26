@@ -24,9 +24,9 @@ the reverted files with `vanillaSha256` in `data/garage-recipe.json`.
 
 ## Local build with proxy runtime
 
-The goal of the C++ port: ship Ripple RL as **one executable plus a `runtime\`
-folder**, with no separate backend process and no Python install required on the
-user's machine (the proxy is the only part that stays Python).
+Ripple RL runs the native UI and backend in one executable. The bundled Python
+runtime supports the offline package writer and, for local builds, the optional
+proxy add-on.
 
 ## Architecture
 
@@ -110,7 +110,3 @@ catalog/features/swaps all load from `dist\data`).
   self-extractor that spins up a TLS MITM proxy and patches game files is a
   classic Windows Defender false-positive trigger; a plain `ripple_rl.exe` + a
   visible `runtime\` folder trips AV far less and starts faster.
-- **What stays Python:** only the proxy — mitmproxy plus `proxy_addon.py` and the
-  `ripple` modules it imports. Everything else (UI + all of `ripple_core`)
-  is native. mitmproxy has no drop-in C++ equivalent, which is why the hybrid was
-  the plan from the start.
