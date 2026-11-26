@@ -205,7 +205,7 @@ against the trusted capture before registering the new hashes.
 In the C++ app, open **Settings → Maintenance → Package patches**. Select a recipe,
 then choose **Apply now** while Rocket League is closed, or launch from Ripple RL to
 apply the selection. Clear the checkbox and apply the selection again to restore the
-original package. The Standard boost recipe is off by default.
+original package. Both boost recipes are off by default.
 
 The native backend reads [the recipe manifest](../data/package-patches.json).
 Each recipe identifies the exact package SHA-256, export number and object path,
@@ -251,6 +251,31 @@ verified that only the selected export changed. In a fresh Epic launch, the
 unpainted Standard boost preview had no smoke plume. The original package was
 restored and its SHA-256 matched the baseline. That verifies a length-changing
 export replacement in the live game. The rollback was verified on disk.
+
+### Authoring a separate cosmetic recipe
+
+The experimental **Hide Standard Blue boost plume** option was built from a clean
+`Boost_Standard_Blue_SF.upk`. Inspect the target package and find the particle
+system through the Blue boost actor's particle component template. It points to
+export #164, `Boost_Standard.FX.Boost_PS`, while the drive component points to
+export #165. In #164, the `Emitters` property at offset `0x48` references export
+#162. The recipe records a splice at `0x58` that sets the array count to zero
+and reduces the property payload from eight to four bytes.
+
+To author another recipe, inspect and extract the target export, edit the copy,
+and calculate the baseline package hash and the original and edited export
+hashes. Record the export path and minimal byte splices in
+[`data/package-patches.json`](../data/package-patches.json). Reopen the generated
+package and compare the other exports before testing the checkbox on a clean
+copy. Enable and disable the options independently, checking the baseline hash
+after each restore.
+
+The Standard Blue output was reopened and checked against all 364 original
+exports. Only #164 changed. Native testing on clean copies applied both boost
+recipes, disabled each independently, and restored both original package hashes.
+All five Garage packages kept their original hashes during that test. The visible
+effect still needs a Garage preview of **Standard Blue**, which uses a different
+package from the unpainted Standard item.
 
 ## Old roulette
 

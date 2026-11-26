@@ -22,6 +22,28 @@
           ]
         }
       ]
+    },
+    {
+      "id": "standard-blue-boost-no-plume",
+      "label": "Hide Standard Blue boost plume (experimental)",
+      "build": "Epic build 2026-11-26",
+      "package": "Boost_Standard_Blue_SF.upk",
+      "baselineSha256": "d1e679f922c4607653cf881cb3b4d654a375b6d933216c680094c26c494b45d1",
+      "edits": [
+        {
+          "export": 164,
+          "objectPath": "Boost_Standard.FX.Boost_PS",
+          "sourceSha256": "e17da8fd2007b7ebc2e7ba3695f8d881078d72ad3975593c2c2f3fa8a032097c",
+          "resultSha256": "901c46bb011fe7379ace38caa0f878bcaaf09e34efbe75963b9c52382ca3dca1",
+          "splices": [
+            {
+              "offset": 88,
+              "beforeHex": "080000000000000001000000a2000000",
+              "afterHex": "040000000000000000000000"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
