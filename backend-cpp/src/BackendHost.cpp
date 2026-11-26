@@ -79,6 +79,7 @@ BackendHost::~BackendHost() { Stop(); }
 
 bool BackendHost::Start(unsigned short ipcPort) {
     store::Init();
+    features::MigrateLegacyState();
 
     json settings = store::Settings();
     if (settings.value("proxyEnabled", true) && win::GetEnvW(L"RIPPLE_RL_NO_PROXY").empty()) {

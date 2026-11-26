@@ -12,6 +12,7 @@ using json = nlohmann::json;
 
 namespace features {
 
+void MigrateLegacyState();                                    // restores state previously written as feature_<name>_json
 json Get(const std::string& name);                            // throws if unknown
 json SetState(const std::string& name, const json& patch);    // merge + persist, returns {ok,...state}
 const json& Stadiums();                                       // data/stadiums.json (cached)
