@@ -11,6 +11,7 @@
 #include "Store.h"
 #include "WinUtil.h"
 
+#include <algorithm>
 #include <cctype>
 #include <cstdio>
 #include <fstream>
@@ -244,6 +245,20 @@ void OpenBackupFolder() {
     ShellExecuteW(nullptr, L"open", dir.c_str(), nullptr, nullptr, SW_SHOWNORMAL);
 }
 
+namespace {
+
+std::string UpdateTitlePackages(const fs::path& cooked, const wchar_t* mode) {
+    std::string result;
+    if (win::RunPythonModule(L"ripple.title_package", store::AppDir(),
+                             {cooked / "ProjectX.upk", store::StateDir() / "feature_titles.json",
+                              store::BackupDir() / "title-packages", mode}, result) != 0) {
+        throw std::runtime_error(result.empty() ? "Could not prepare the custom title packages." : Trim(result));
+    }
+    return Trim(result);
+}
+
+}  // namespace
+
 json Launch(const json& p, ProxyManager& proxy) {
     if (RlRunning()) throw std::runtime_error("Close Rocket League before preparing a new launch.");
     fs::path cooked = store::CookedDir();
@@ -252,6 +267,8 @@ json Launch(const json& p, ProxyManager& proxy) {
     fs::path exe = root / "Binaries" / "Win64" / "RocketLeague.exe";
     std::error_code ec;
     if (!fs::exists(exe, ec)) throw std::runtime_error("RocketLeague.exe not found");
+    if (fs::is_directory(store::BackupDir() / "title-packages"))
+        UpdateTitlePackages(cooked, L"--launch-mode=restore");
 
     const auto patchResults = package_patches::Apply(cooked);
     const auto gp = store::GaragePatchDir();
@@ -299,6 +316,18 @@ json Launch(const json& p, ProxyManager& proxy) {
         throw std::runtime_error("Install this build's garage patch data before setting flip-reset colour.");
     }
 
+    const json titleSettings = features::Get("titles");
+    const json titleRows = titleSettings.value("titles", json::array());
+    const bool hasCustomTitles = titleSettings.value("enabled", true) &&
+        std::any_of(titleRows.begin(), titleRows.end(), [](const json& row) {
+            return row.is_object() && row.value("custom", false);
+        });
+    // The custom-title patch now edits only TAGame.upk (display call sites +
+    // picker), which is unguarded and EAC-safe, so it installs on both normal
+    // and -noeac launches and the game still auto-launches as usual.
+    const std::string titleStatus = hasCustomTitles
+        ? UpdateTitlePackages(cooked, L"--launch-mode=install") : "inactive";
+    const bool localTitlePackages = titleStatus == "installed";
     std::string src = s.value("target", json::object()).value("source", std::string(""));
     bool noEac = p.value("noEac", false);
     const bool chooseInEpic = src == "Epic" && noEac;
@@ -306,8 +335,10 @@ json Launch(const json& p, ProxyManager& proxy) {
         // A direct game start can redirect through Epic and lose the selected mode.
         const wchar_t* uri = chooseInEpic ? L"com.epicgames.launcher://store/library"
                                          : L"com.epicgames.launcher://apps/Sugar?action=launch&silent=true";
-        if (reinterpret_cast<INT_PTR>(ShellExecuteW(nullptr, L"open", uri, nullptr, nullptr, SW_SHOWNORMAL)) <= 32)
+        if (reinterpret_cast<INT_PTR>(ShellExecuteW(nullptr, L"open", uri, nullptr, nullptr, SW_SHOWNORMAL)) <= 32) {
+            if (localTitlePackages) UpdateTitlePackages(cooked, L"--launch-mode=restore");
             throw std::runtime_error("Could not open the Epic Games Launcher.");
+        }
     } else {
         std::wstring cmd = L"\"" + exe.wstring() + L"\"";
         if (noEac) cmd += L" -noeac";
@@ -317,12 +348,15 @@ json Launch(const json& p, ProxyManager& proxy) {
         std::wstring dir = exe.parent_path().wstring();
         std::wstring mut = cmd;
         if (!CreateProcessW(nullptr, mut.data(), nullptr, nullptr, FALSE, CREATE_NO_WINDOW, nullptr,
-                            dir.c_str(), &si, &pi))
+                            dir.c_str(), &si, &pi)) {
+            if (localTitlePackages) UpdateTitlePackages(cooked, L"--launch-mode=restore");
             throw std::runtime_error("Could not start Rocket League.");
+        }
         CloseHandle(pi.hProcess);
         CloseHandle(pi.hThread);
     }
-    return json{{"ok", true}, {"chooseInEpic", chooseInEpic}, {"packagePatches", patchResults}};
+    return json{{"ok", true}, {"chooseInEpic", chooseInEpic}, {"packagePatches", patchResults},
+                {"titlePackage", titleStatus}};
 }
 
 }  // namespace home

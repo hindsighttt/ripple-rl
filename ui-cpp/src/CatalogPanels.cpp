@@ -597,6 +597,8 @@ void App::TitlesPanel() {
 
     bool changed = false;
     const bool showActive = titleTab_ == 2;
+    if (showActive && !customTitlesRequested_)
+        LoadCustomTitles();
     if (!showActive) {
         const float categoryWidth = (std::min)(Px(185), ImGui::GetContentRegionAvail().x * 0.44f);
         changed |= Search("##titleSearch", "Search titles", titleSearch_,
@@ -635,6 +637,20 @@ void App::TitlesPanel() {
     if (showActive) {
         filtered.reserve(spawnedTitles_.size());
         for (const auto& active : spawnedTitles_) {
+            const auto saved = customTitles_.find("titles");
+            if (saved != customTitles_.end() && saved->is_array()) {
+                const auto custom = std::find_if(saved->begin(), saved->end(), [&](const json& title) {
+                    return title.is_object() && title.value("id", std::string()) == active.titleId;
+                });
+                if (custom != saved->end()) {
+                    const auto name = custom->find("text");
+                    const std::string_view label = name != custom->end() && name->is_string()
+                        ? name->get_ref<const std::string&>() : active.titleId;
+                    const unsigned color = RgbHex(custom->value("color", std::string()), 0xFFFFFF);
+                    filtered.push_back({label, active.instanceId, Rgba::Hex(color), false});
+                    continue;
+                }
+            }
             const auto row = std::find_if(titleRows_.begin(), titleRows_.end(),
                                           [&](const TitleRow& title) { return active.titleId == title.id; });
             if (row != titleRows_.end())
@@ -770,6 +786,7 @@ void App::CustomTitlesPanel() {
         customTitlePending_ = true;
         backend_.Request("titles.setEnabled", {{"value", enabled}}, onResult);
     }
+    ImGui::TextWrapped("Launch without Easy Anti-Cheat to add saved titles to Rocket League's title picker.");
     ImGui::SetNextItemWidth(-1.0f);
     MenuWidgets::Field("##customTitle", "Title text", customTitleText_);
     const float colorWidth = ImMin(Px(250), ImGui::GetContentRegionAvail().x * 0.51f);
@@ -821,6 +838,9 @@ void App::CustomTitlesPanel() {
 
     MenuTheme::Section("Saved titles", std::to_string(titles.size()));
     MenuWidgets::BeginPane("##customTitleList", ImVec2(0, -Px(31)));
+    constexpr float spawnWidth = 78, editWidth = 48, removeWidth = 68;
+    const float actionWidth = Px(spawnWidth + editWidth + removeWidth) + ImGui::GetStyle().ItemSpacing.x * 3;
+    const Font font = Font::System(13);
     if (titles.empty())
         Muted("No custom titles");
     for (const auto& title : titles) {
@@ -829,13 +849,32 @@ void App::CustomTitlesPanel() {
         const std::string glow = title.value("glow", std::string());
         const ImVec4 color = ReadTitleHex(title.value("color", std::string()), ImVec4(1, 1, 1, 1));
         ImGui::PushID(id.c_str());
-        ImGui::PushStyleColor(ImGuiCol_Text, color);
-        ImGui::AlignTextToFramePadding();
-        ImGui::TextUnformatted(label.c_str());
-        ImGui::PopStyleColor();
+        const float labelWidth = (std::max)(1.0f, ImGui::GetContentRegionAvail().x - actionWidth);
+        const ImVec2 position = ImGui::GetCursorScreenPos();
+        const ImVec2 labelSize(labelWidth, ImGui::GetFrameHeight());
+        Typography::Draw(ImGui::GetWindowDrawList(), font, ImRect(position, position + labelSize),
+                         Rgba(color.x, color.y, color.z),
+                         Typography::Truncate(font, label, labelWidth));
+        ImGui::Dummy(labelSize);
+        if (Typography::Measure(font, label).x > labelWidth)
+            ImGui::SetItemTooltip("%s", label.c_str());
         ImGui::SameLine();
         ImGui::BeginDisabled(customTitlePending_ || id.empty());
-        if (MenuWidgets::Button("Edit")) {
+        const bool active = activeTitleIds_.contains(id);
+        if (FooterButton(active ? "Spawned" : "Spawn", active || !enabled || titleActionsPending_ > 0, spawnWidth)) {
+            ++titleActionsPending_;
+            backend_.Request("spawn.addTitle", {{"titleId", id}}, [this, id](const json&, const std::string& error) {
+                --titleActionsPending_;
+                if (error.empty())
+                    activeTitleIds_.insert(id);
+                Toast(error.empty() ? "Title added to spawn list" : error, error.empty());
+                RefreshSpawnList();
+            });
+        }
+        if (!enabled && !active)
+            ImGui::SetItemTooltip("Enable custom titles to spawn this title.");
+        ImGui::SameLine();
+        if (MenuWidgets::Button("Edit", ImVec2(Px(editWidth), 0))) {
             customTitleEdit_ = id;
             customTitleText_ = label;
             customTitleColor_[0] = color.x;
@@ -848,7 +887,7 @@ void App::CustomTitlesPanel() {
             customTitleHasGlow_ = !glow.empty();
         }
         ImGui::SameLine();
-        if (MenuWidgets::Button("Remove")) {
+        if (MenuWidgets::Button("Remove", ImVec2(Px(removeWidth), 0))) {
             customTitlePending_ = true;
             if (customTitleEdit_ == id) {
                 customTitleEdit_.clear();

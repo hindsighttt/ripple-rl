@@ -283,8 +283,16 @@ def build(package, edits, *, table_edits=(), added_names=b"", name_count=0,
     if total_names != package.name_count or len(records) != package.export_count:
         counts = struct.pack("<ii", package.export_count, package.name_count)
         generation = summary.find(counts, 57)
-        require(generation >= 0 and summary.find(counts, generation + 1) == -1,
-                "Cannot identify the last generation count pair in this package")
+        require(generation >= 0, "Cannot identify the generation count pair in this package")
+        if summary.find(counts, generation + 1) != -1:
+            # Consecutive generations can carry identical counts (for example
+            # ProjectX). The cooked summary's generation array follows its GUID.
+            count_offset = 85
+            count = struct.unpack("<I", take(summary, count_offset, 4))[0]
+            generation = count_offset + 4 + (count - 1) * 12
+            require(count > 0 and generation + 12 <= len(summary) and
+                    take(summary, generation, 8) == counts,
+                    "Cannot identify the last generation count pair in this package")
         struct.pack_into("<ii", summary, generation, len(records), total_names)
     struct.pack_into("<6i", summary, 25, total_names, name_address, len(records), export_address,
                      len(imports) // 28, import_address)

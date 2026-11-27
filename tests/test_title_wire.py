@@ -24,33 +24,42 @@ class TitleWireTests(unittest.TestCase):
     def test_empty_when_no_title(self):
         self.assertEqual(social.title_response(), "")
 
-    def test_spawned_title_served_in_reference_format(self):
-        spawn.add_title({"titleId": "PsyonixHackathonWinner"})
-        self.assertEqual(
-            social.title_response(),
-            "PsyonixHackathonWinner|" + RIPPLE_BLOB,
-        )
-
-    def test_blob_is_constant_across_titles(self):
-        spawn.add_title({"titleId": "S23_2v2_TopRank_100"})
-        blob = social.title_response().split("|", 1)[1]
-        self.assertEqual(blob, RIPPLE_BLOB)
-
-    def test_most_recent_spawned_title_wins(self):
+    def test_latest_custom_is_served_in_reference_format(self):
         spawn.add_title({"titleId": "Developer"})
-        spawn.add_title({"titleId": "PsyonixHackathonWinner"})
-        self.assertEqual(social.active_title_id(), "PsyonixHackathonWinner")
+        features.set_state("titles", {"enabled": True, "titles": [
+            {"id": "CustomTitle_Shift_OLD", "custom": True},
+            {"id": "CustomTitle_Ripple_NEW", "custom": True},
+            {"id": "Developer", "custom": False},
+        ]})
+        self.assertEqual(social.title_response(), "CustomTitle_Ripple_NEW|" + RIPPLE_BLOB)
 
-    def test_custom_display_title_takes_precedence_over_spawn(self):
+    def test_latest_spawned_title_is_served_without_a_custom_title(self):
+        spawn.add_title({"titleId": "PsyonixHackathonWinner"})
         spawn.add_title({"titleId": "Developer"})
-        features.set_state("titles", {"enabled": True,
-            "titles": [{"id": "Season_13_Grand_Champion", "text": "x", "custom": True}]})
-        self.assertEqual(social.active_title_id(), "Season_13_Grand_Champion")
-        self.assertEqual(social.title_response(),
-                         "Season_13_Grand_Champion|" + RIPPLE_BLOB)
+        self.assertEqual(social.title_response(), "Developer|" + RIPPLE_BLOB)
+
+    def test_legacy_custom_id_is_supported(self):
+        features.set_state("titles", {"enabled": True, "titles": [
+            {"id": "CustomTitle_Shift_ABCD1234", "custom": True},
+        ]})
+        self.assertEqual(social.title_response(), "CustomTitle_Shift_ABCD1234|" + RIPPLE_BLOB)
+
+    def test_empty_when_custom_titles_disabled(self):
+        features.set_state("titles", {"enabled": False, "titles": [
+            {"id": "CustomTitle_Ripple_ABCD1234", "custom": True},
+        ]})
+        self.assertEqual(social.title_response(), "")
+
+    def test_spawned_title_is_served_when_custom_titles_are_disabled(self):
+        spawn.add_title({"titleId": "Developer"})
+        features.set_state("titles", {"enabled": False, "titles": [
+            {"id": "CustomTitle_Ripple_ABCD1234", "custom": True},
+        ]})
+        self.assertEqual(social.title_response(), "Developer|" + RIPPLE_BLOB)
 
     def test_no_longer_emits_spacket_json(self):
-        spawn.add_title({"titleId": "Developer"})
+        features.set_state("titles", {"enabled": True,
+            "titles": [{"id": "CustomTitle_Ripple_ABCD1234", "text": "x", "custom": True}]})
         self.assertNotIn("SPacket1", social.title_response())
 
 

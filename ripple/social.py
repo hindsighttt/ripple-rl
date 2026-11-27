@@ -1,5 +1,5 @@
 import time, secrets, random
-from . import features, titles_config
+from . import features, spawn, titles_config
 
 TITLE_FILE = "titles"
 
@@ -23,7 +23,7 @@ def ping_value():
 
 def save_title(p):
     f = features.get("titles")
-    tid = p.get("titleId") or ("CustomTitle_" + secrets.token_hex(6))
+    tid = p.get("titleId") or ("CustomTitle_Ripple_" + secrets.token_hex(4).upper())
     text = (p.get("text") or "").strip()
     if not text:
         raise ValueError("title text required")
@@ -49,17 +49,15 @@ TITLE_BLOB = "B1:ARUBAAAA1MoBAAAAAAAAAAAAAAAAAAAAAAA="
 
 
 def active_title_id():
-    """The title to display on the PRI/leaderboard: an explicit custom-title selection
-    if the titles feature has one, otherwise the most-recently spawned title."""
-    f = features.get("titles")
-    if f.get("enabled"):
-        own = [t for t in f.get("titles", []) if t.get("custom") and t.get("id")]
-        if own:
-            return own[-1]["id"]
-    from . import spawn
-    spawned = [x.get("titleId") for x in spawn._load().get("items", []) if x.get("titleId")]
-    if spawned:
-        return spawned[-1]
+    """Prefer the latest enabled custom title, then the latest spawned title."""
+    state = features.get("titles")
+    if state.get("enabled"):
+        for title in reversed(state.get("titles", [])):
+            if title.get("custom") and title.get("id"):
+                return title["id"]
+    for item in reversed(spawn._load().get("items", [])):
+        if item.get("titleId"):
+            return item["titleId"]
     return ""
 
 
