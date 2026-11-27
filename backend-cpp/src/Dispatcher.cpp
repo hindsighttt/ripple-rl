@@ -22,7 +22,7 @@
 #include <stdexcept>
 
 namespace {
-const char* kVersion = "1.8.6";
+const char* kVersion = "1.8.7";
 constexpr char kRouletteStateFile[] = "feature_roulette.json";  // shared with garage_wire.py
 
 // bool(p["value"]) with Python-ish truthiness for the common json types.

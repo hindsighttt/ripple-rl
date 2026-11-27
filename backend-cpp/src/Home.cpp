@@ -23,7 +23,7 @@
 namespace fs = std::filesystem;
 
 namespace {
-const char* kVersion = "1.8.6";
+const char* kVersion = "1.8.7";
 
 bool IsDir(const std::string& p) {
     if (p.empty()) return false;
