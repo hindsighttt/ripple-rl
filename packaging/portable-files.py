@@ -9,7 +9,8 @@ import sysconfig
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PATCH_MODULES = ("bootstrap", "garage_recipe", "package_writer", "patch_recipe", "patches", "store", "upk")
+PATCH_MODULES = ("bootstrap", "garage_recipe", "package_writer", "patch_recipe", "patches", "store",
+                 "title_package", "upk", "webcache")
 
 
 def main(package: Path) -> None:

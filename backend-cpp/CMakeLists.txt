@@ -48,7 +48,7 @@ target_compile_definitions(ripple_core PRIVATE
 if (MSVC)
     target_compile_options(ripple_core PRIVATE /utf-8 /permissive- /Zc:__cplusplus)
 endif()
-target_link_libraries(ripple_core PUBLIC ws2_32 advapi32 bcrypt shell32 user32 gdi32)
+target_link_libraries(ripple_core PUBLIC ws2_32 advapi32 bcrypt shell32 user32 gdi32 wininet crypt32)
 
 # CLI/standalone targets are only built when this is the top-level project, so
 # add_subdirectory() from ui-cpp builds just the ripple_core library.

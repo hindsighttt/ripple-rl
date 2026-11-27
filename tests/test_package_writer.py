@@ -6,7 +6,7 @@ import unittest
 
 from Crypto.Cipher import AES
 
-from ripple import bootstrap, garage_recipe, package_writer as writer, patch_recipe, patches, upk
+from ripple import bootstrap, garage_recipe, package_writer as writer, patch_recipe, patches, title_package, upk
 from tools.package_writer import output_file
 
 
@@ -22,10 +22,9 @@ def export_entry(name, size=0, address=0):
     return bytes(record)
 
 
-def fixture():
-    physical = 128
+def fixture(physical=128):
     header_size = 512
-    virtual = 320  # Virtual chunk overlaps the physical header's numeric range.
+    virtual = physical + 192  # Virtual chunk overlaps the physical header's numeric range.
     payload = b"originalothers"
     packed = bootstrap._encode_chunk(payload)
     names = name_entry("First") + name_entry("Second")
@@ -67,6 +66,34 @@ class PackageWriterTests(unittest.TestCase):
         self.assertEqual(relocated.export_body(3), b"added body")
         self.assertEqual(relocated.export_body(1), b"original")
         self.assertEqual(relocated.export_body(2), b"others")
+
+    def test_appends_names_to_the_latest_of_identical_generations(self):
+        baseline = bytearray(fixture(physical=160))
+        baseline[80:88] = bytes(8)
+        struct.pack_into("<Iiiiiii", baseline, 85, 2, 2, 2, 1, 2, 2, 2)
+        source = writer.Package(bytes(baseline), [upk.DEFAULT_KEY])
+        output = writer.build(source, [], added_names=name_entry("Third"), name_count=1)
+        self.assertEqual(struct.unpack_from("<iii", output, 89), (2, 2, 1))
+        self.assertEqual(struct.unpack_from("<iii", output, 101), (2, 3, 2))
+        self.assertEqual(writer.Package(output, [upk.DEFAULT_KEY], source.physical_names).names,
+                         ["First", "Second", "Third"])
+
+    def test_title_insert_matches_the_stock_projectx_instruction(self):
+        xp = title_package._assign_member(title_package.TITLE_ID, title_package._fname(0x2886))
+        actual, vm_size = title_package._insert_title(b"\x26", [xp])
+        self.assertEqual(actual, bytes.fromhex(
+            "57 09 01 b2 44 00 00 33 00 26 54 0f 35 a1 00 00 00 a2 00 00 00 00 01 "
+            "2b 60 49 00 00 21 86 28 00 00 00 00 00 00 16 2b 60 49 00 00 16"
+        ))
+        self.assertEqual(vm_size, 64)
+
+    def test_picker_insert_matches_the_stock_tagame_instruction(self):
+        none = title_package._fname(0x7AE4)
+        actual, vm_size = title_package._picker_item(none, b"\x25")
+        self.assertEqual(actual, bytes.fromhex(
+            "57 09 2b 1d 93 00 00 15 00 25 1c 0b 93 00 00 21 e4 7a 00 00 00 00 00 00 16 16"
+        ))
+        self.assertEqual(vm_size, 34)
 
     def test_rejects_stale_source_hash_and_table_bytes(self):
         source = writer.Package(fixture(), [upk.DEFAULT_KEY])

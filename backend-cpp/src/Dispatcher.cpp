@@ -1,5 +1,7 @@
 #include "Dispatcher.h"
 
+#include <cctype>
+
 #include "Catalog.h"
 #include "Features.h"
 #include "Garage.h"
@@ -20,7 +22,7 @@
 #include <stdexcept>
 
 namespace {
-const char* kVersion = "1.8.6";
+const char* kVersion = "1.8.7";
 constexpr char kRouletteStateFile[] = "feature_roulette.json";  // shared with garage_wire.py
 
 // bool(p["value"]) with Python-ish truthiness for the common json types.
@@ -312,8 +314,10 @@ void Dispatcher::Register() {
         std::string tid;
         if (p.contains("titleId") && p["titleId"].is_string() && !p["titleId"].get<std::string>().empty())
             tid = p["titleId"].get<std::string>();
-        else
-            tid = "CustomTitle_" + win::RandomHex(6);
+        else {
+            tid = "CustomTitle_Shift_" + win::RandomHex(4);
+            for (auto& c : tid) c = (char)std::toupper((unsigned char)c);
+        }
         std::string text = (p.contains("text") && p["text"].is_string()) ? p["text"].get<std::string>() : "";
         size_t a = text.find_first_not_of(" \t\r\n");
         text = (a == std::string::npos) ? "" : text.substr(a, text.find_last_not_of(" \t\r\n") - a + 1);
@@ -517,3 +521,4 @@ void Dispatcher::Dispatch(const json& msg) {
             Emit("app.toast", json{{"text", std::string(e.what())}, {"ok", false}});
     }
 }
+

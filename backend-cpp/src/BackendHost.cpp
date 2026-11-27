@@ -70,6 +70,7 @@ struct BackendHost::Impl {
     std::unique_ptr<Dispatcher> dispatcher;
     std::unique_ptr<stats::Client> stats;
     std::jthread fpsWorker;
+    std::jthread proxyWorker;
     std::thread worker;
     std::atomic<bool> run{false};
 };
@@ -81,8 +82,14 @@ bool BackendHost::Start(unsigned short ipcPort) {
     store::Init();
     features::MigrateLegacyState();
 
+    // Before anything else, undo a system proxy that a previous run left pointing
+    // at a dead mitmdump. That leftover setting survives reboots and takes the
+    // whole machine offline, so heal it even when the proxy is disabled now.
+    p_->proxy.RecoverLeakedProxy();
+
     json settings = store::Settings();
-    if (settings.value("proxyEnabled", true) && win::GetEnvW(L"RIPPLE_RL_NO_PROXY").empty()) {
+    const bool proxyEnabled = settings.value("proxyEnabled", true) && win::GetEnvW(L"RIPPLE_RL_NO_PROXY").empty();
+    if (proxyEnabled) {
         try {
             p_->proxy.Start();
         } catch (const std::exception& e) {
@@ -91,6 +98,18 @@ bool BackendHost::Start(unsigned short ipcPort) {
     }
 
     if (!p_->server.Start(ipcPort)) return false;
+    if (proxyEnabled) {
+        p_->proxyWorker = std::jthread([this](std::stop_token stop) {
+            unsigned ticks = 0;
+            while (!stop.stop_requested()) {
+                Sleep(100);
+                if (!stop.stop_requested() && ++ticks == 20) {
+                    p_->proxy.Poll();
+                    ticks = 0;
+                }
+            }
+        });
+    }
 
     p_->dispatcher = std::make_unique<Dispatcher>(&p_->server, &p_->proxy);
     Overlays* ov = &p_->overlays;
@@ -138,8 +157,13 @@ void BackendHost::Stop() {
         p_->stats.reset();
     }
     p_->server.Stop();
+    if (p_->proxyWorker.joinable()) {
+        p_->proxyWorker.request_stop();
+        p_->proxyWorker.join();
+    }
     try {
         p_->proxy.Stop();
-    } catch (...) {
+    } catch (const std::exception& e) {
+        std::fprintf(stderr, "proxy shutdown: %s\n", e.what());
     }
 }

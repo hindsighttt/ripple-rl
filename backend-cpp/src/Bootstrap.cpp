@@ -1,5 +1,7 @@
 #include "Bootstrap.h"
 
+#include <windows.h>
+
 #include "Aes.h"
 #include "Hash.h"
 #include "Store.h"
@@ -253,15 +255,13 @@ std::string ReadAll(const fs::path& p) {
 void WriteAtomic(const fs::path& target, const std::string& data) {
     fs::path tmp = target;
     tmp += ".ripple-bootstrap-tmp";
-    {
-        std::ofstream f(tmp, std::ios::binary | std::ios::trunc);
-        f.write(data.data(), (std::streamsize)data.size());
-    }
-    std::error_code ec;
-    fs::rename(tmp, target, ec);
-    if (ec) {
-        fs::remove(target, ec);
-        fs::rename(tmp, target, ec);
+    std::ofstream out(tmp, std::ios::binary | std::ios::trunc);
+    out.write(data.data(), static_cast<std::streamsize>(data.size()));
+    out.close();
+    if (!out || !MoveFileExW(tmp.c_str(), target.c_str(), MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH)) {
+        std::error_code ec;
+        fs::remove(tmp, ec);
+        throw std::runtime_error("Could not replace " + target.filename().string() + ".");
     }
 }
 
@@ -360,17 +360,25 @@ std::string ExportBytes(const std::string& data, const std::vector<std::string>&
 std::string DecodeChunk(const std::string& chunk) { return DecodeChunkImpl(chunk); }
 
 json Prepare(const fs::path& cookedDir, const fs::path& dataDir, const fs::path& backupDir) {
+    const auto active = store::ReadJson("proxy-bootstrap.json", json::object());
+    if (active.value("changed", false) &&
+        fs::path(active.value("cookedDir", std::string{})) != cookedDir)
+        RestoreActive();
     fs::path target = cookedDir / "ProjectX.upk";
     std::string original = ReadAll(target);
     std::string modified = Build(original, upk::LoadKeys(dataDir));
     if (modified == original) return json{{"changed", false}};
     std::string hashHex = hashing::Sha256Hex(original);
     fs::path backup = backupDir / "proxy-bootstrap" / hashHex / "ProjectX.upk";
-    std::error_code ec;
-    fs::create_directories(backup.parent_path(), ec);
-    if (!fs::exists(backup, ec)) fs::copy_file(target, backup, ec);
+    fs::create_directories(backup.parent_path());
+    if (!fs::exists(backup)) WriteAtomic(backup, original);
+    if (ReadAll(backup) != original)
+        throw std::runtime_error("The ProjectX proxy backup does not match the original.");
+    const json state{{"changed", true}, {"backup", backup.string()}, {"cookedDir", cookedDir.string()},
+                     {"originalSha256", hashHex}, {"patchedSha256", hashing::Sha256Hex(modified)}};
+    WriteAtomic(store::StateDir() / "proxy-bootstrap.json", state.dump());
     WriteAtomic(target, modified);
-    return json{{"changed", true}, {"backup", backup.string()}};
+    return state;
 }
 
 bool RestoreActive() {
@@ -378,16 +386,22 @@ bool RestoreActive() {
     if (!state.value("changed", false) || !state.contains("backup")) return false;
     fs::path backup = state.value("backup", std::string(""));
     std::string original = ReadAll(backup);
+    const auto originalHash = state.value("originalSha256", std::string{});
+    if (!originalHash.empty() && hashing::Sha256Hex(original) != originalHash)
+        throw std::runtime_error("The saved ProjectX backup has changed.");
     fs::path target = fs::path(state.value("cookedDir", std::string(""))) / "ProjectX.upk";
     std::string current = ReadAll(target);
     if (current != original) {
-        if (Build(original, upk::LoadKeys(store::DataDir())) != current)
+        const auto patchedHash = state.value("patchedSha256", std::string{});
+        const bool knownPatch = patchedHash.empty() ? Build(original, upk::LoadKeys(store::DataDir())) == current
+                                                    : hashing::Sha256Hex(current) == patchedHash;
+        if (!knownPatch)
             throw std::runtime_error("ProjectX changed after proxy preparation; retained its backup");
         WriteAtomic(target, original);
     }
     state["changed"] = false;
     state["restored"] = true;
-    store::WriteJson("proxy-bootstrap.json", state);
+    WriteAtomic(store::StateDir() / "proxy-bootstrap.json", state.dump());
     return true;
 }
 

@@ -17,7 +17,7 @@ void EnsureWinsock();
 
 // Run a command line and wait for it. Returns the exit code, or -1 if the
 // process could not be started. `hidden` passes CREATE_NO_WINDOW.
-int RunWait(const std::wstring& cmdline, bool hidden);
+int RunWait(const std::wstring& cmdline, bool hidden, unsigned long timeoutMs = 0xffffffffUL);
 
 // Run a command line, capture stdout+stderr into `out`, and wait.
 // Returns the exit code, or -1 if the process could not be started.
