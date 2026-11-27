@@ -279,16 +279,14 @@ json Launch(const json& p, ProxyManager& proxy) {
     };
     if (hasGarage && gp == store::GarageRecipeDir()) applyGarage();
     json s = store::Settings();
-    if (s.value("proxyEnabled", true)) {
+    const bool proxyEnabled = s.value("proxyEnabled", true) && win::GetEnvW(L"RIPPLE_RL_NO_PROXY").empty();
+    if (proxyEnabled) {
         proxy.Start();
-        json prep = bootstrap::Prepare(cooked, store::DataDir(), store::BackupDir());
-        if (prep.value("changed", false)) {
-            json st = prep;
-            st["cookedDir"] = cooked.string();
-            store::WriteJson("proxy-bootstrap.json", st);
-        }
+        bootstrap::Prepare(cooked, store::DataDir(), store::BackupDir());
+        proxy.PatchWebcache();
+    } else {
+        proxy.RestoreDirectRouting();
     }
-    proxy.PatchWebcache();
     // Register enabled custom titles in the cached PlayerTitleConfig before RL
     // reads it. Safe when the proxy is disabled; the addon also re-applies it.
     try {

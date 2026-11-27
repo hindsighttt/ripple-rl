@@ -59,7 +59,7 @@ void EnsureWinsock() {
     done = true;
 }
 
-int RunWait(const std::wstring& cmdline, bool hidden) {
+int RunWait(const std::wstring& cmdline, bool hidden, unsigned long timeoutMs) {
     std::wstring cl = cmdline;  // CreateProcessW may modify the buffer
     STARTUPINFOW si{};
     si.cb = sizeof(si);
@@ -67,9 +67,12 @@ int RunWait(const std::wstring& cmdline, bool hidden) {
     DWORD flags = hidden ? CREATE_NO_WINDOW : 0;
     if (!CreateProcessW(nullptr, cl.data(), nullptr, nullptr, FALSE, flags, nullptr, nullptr, &si, &pi))
         return -1;
-    WaitForSingleObject(pi.hProcess, INFINITE);
-    DWORD code = 0;
-    GetExitCodeProcess(pi.hProcess, &code);
+    DWORD code = static_cast<DWORD>(-1);
+    if (WaitForSingleObject(pi.hProcess, timeoutMs) == WAIT_OBJECT_0) {
+        GetExitCodeProcess(pi.hProcess, &code);
+    } else {
+        TerminateProcess(pi.hProcess, 1);
+    }
     CloseHandle(pi.hProcess);
     CloseHandle(pi.hThread);
     return (int)code;

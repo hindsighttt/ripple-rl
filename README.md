@@ -43,6 +43,9 @@ session. The checkout contains source and recipe data. Build outputs, binary
 fixtures, and the local proxy add-on stay outside Git.
 See [PACKAGING.md](PACKAGING.md) for portable build instructions.
 
+If Rocket League fails to sign in while Ripple's proxy is enabled, see
+[Proxy troubleshooting](docs/proxy-troubleshooting.md).
+
 ## Garage patches
 
 Select your Rocket League installation in **Settings**. With Rocket League
